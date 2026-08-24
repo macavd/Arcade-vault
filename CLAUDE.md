@@ -6,12 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Arcade Vault is a planned platform for playing games online and competing for high scores (see `README.md`). The codebase is currently the unmodified `create-next-app` scaffold — no game/domain code exists yet, so most work here means building features from scratch on this base.
 
-## Commands
+## Skills
 
-- `npm run dev` — start the dev server (Next.js, http://localhost:3000)
-- `npm run build` — production build
-- `npm start` — serve the production build
-- `npm run lint` — run ESLint
+Usa siempre /frontend-design para diseñar la interfaz de usuario 
 
 No test runner is configured yet.
 

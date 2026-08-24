@@ -14,3 +14,9 @@ https://github.com/Klerith/fernando-skills
 ```bash
 npx skills@latest add Klerith/fernando-skills
 ```
+## Commands
+
+- `npm run dev` — start the dev server (Next.js, http://localhost:3000)
+- `npm run build` — production build
+- `npm start` — serve the production build
+- `npm run lint` — run ESLint
