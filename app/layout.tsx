@@ -3,6 +3,7 @@ import { Press_Start_2P, JetBrains_Mono, Courier_Prime } from "next/font/google"
 import "./globals.css";
 import Nav from "./components/Nav";
 import ArcadeBackground from "./components/ArcadeBackground";
+import SessionProvider from "./components/SessionProvider";
 
 // Fonts referenced by references/templates/styles.css
 // --pixel: "Press Start 2P"  |  --mono: "JetBrains Mono", "Courier Prime"
@@ -39,11 +40,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${pressStart2P.variable} ${jetBrainsMono.variable} ${courierPrime.variable} h-full`}
     >
       <body>
-        <ArcadeBackground />
-        <div id="root">
-          <Nav />
-          <main className="av-main">{children}</main>
-          <footer
+        <SessionProvider>
+          <ArcadeBackground />
+          <div id="root">
+            <Nav />
+            <main className="av-main">{children}</main>
+            <footer
             style={{
               borderTop: "1px solid var(--line)",
               padding: "20px 32px",
@@ -56,7 +58,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           >
             © 2026 ARCADE VAULT · HECHO CON PIXELES Y NEÓN · v2.6.0
           </footer>
-        </div>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   );
