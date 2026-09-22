@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "./SessionProvider";
 
 const LINKS = [
   { href: "/", label: "Biblioteca", match: (p: string) => p === "/" || p.startsWith("/juego") },
@@ -12,6 +13,7 @@ const LINKS = [
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { user, signOut } = useSession();
   const close = () => setOpen(false);
 
   return (
@@ -43,9 +45,21 @@ export default function Nav() {
           <span>CRÉDITOS · 03</span>
         </div>
 
-        <Link href="/auth" className="btn auth-btn">
-          Iniciar Sesión
-        </Link>
+        {user ? (
+          <button
+            className="btn ghost auth-btn"
+            onClick={() => {
+              close();
+              signOut();
+            }}
+          >
+            {user.name} ▾
+          </button>
+        ) : (
+          <Link href="/auth" className="btn auth-btn" onClick={close}>
+            Iniciar Sesión
+          </Link>
+        )}
 
         <button
           className="btn ghost hamburger"
@@ -79,7 +93,7 @@ export default function Nav() {
           className={pathname.startsWith("/auth") ? "active" : ""}
           onClick={close}
         >
-          Iniciar Sesión
+          {user ? "Cuenta" : "Iniciar Sesión"}
         </Link>
         <div style={{ flex: 1 }} />
         <div
