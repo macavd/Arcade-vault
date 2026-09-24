@@ -15,12 +15,12 @@ export default function AuthPage() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     signIn(user || "PLAYER1"); // signIn ya normaliza a mayúsculas y recorta a 10
-    router.push("/");
+    router.push("/games");
   };
 
   const playAsGuest = () => {
     // Invitado: sin usuario en sesión (la Nav sigue mostrando "Iniciar Sesión")
-    router.push("/");
+    router.push("/games");
   };
 
   return (

@@ -1,6 +1,6 @@
 # SPEC 02 — Landing page (Inicio) de Arcade Vault
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 01
 > **Date:** 2026-09-24
 > **Objective:** Portar la landing `references/templates/home-about/home.jsx` a una ruta real `/` del App Router, moviendo la Biblioteca actual a `/games`.
