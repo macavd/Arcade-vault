@@ -140,7 +140,7 @@ export default function GamePlayerPage({ params }: PageProps<"/jugar/[id]">) {
               <button className="btn" onClick={restart}>
                 JUGAR DE NUEVO
               </button>
-              <button className="btn magenta" onClick={() => router.push("/")}>
+              <button className="btn magenta" onClick={() => router.push("/games")}>
                 VOLVER AL VAULT
               </button>
             </div>

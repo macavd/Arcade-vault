@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { useSession } from "./SessionProvider";
 
 const LINKS = [
-  { href: "/", label: "Biblioteca", match: (p: string) => p === "/" || p.startsWith("/juego") },
+  { href: "/", label: "Inicio", match: (p: string) => p === "/" },
+  { href: "/games", label: "Biblioteca", match: (p: string) => p === "/games" || p.startsWith("/juego") },
   { href: "/salon", label: "Salón de la Fama", match: (p: string) => p.startsWith("/salon") },
 ] as const;
 
