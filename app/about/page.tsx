@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useReveal } from "../components/useReveal";
 
 function HighlightIcon({ kind }: { kind: string }) {
@@ -61,6 +62,125 @@ const HIGHLIGHTS = [
   { i: "PLANT", t: "PROYECTO EN CONSTANTE CRECIMIENTO", c: "green" },
 ];
 
+type Status = "idle" | "sending" | "error" | "sent";
+
+function ContactForm() {
+  const [form, setForm] = useState({ name: "", email: "", msg: "" });
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [sentName, setSentName] = useState("");
+  const [shake, setShake] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === "sending") return;
+
+    if (!form.name.trim() || !form.email.trim() || !form.msg.trim()) {
+      setShake(true);
+      setTimeout(() => setShake(false), 400);
+      return;
+    }
+
+    setStatus("sending");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setErrorMsg(data.error || "No se pudo enviar el mensaje. Inténtalo de nuevo.");
+        setStatus("error");
+        return;
+      }
+      setSentName(form.name.trim());
+      setStatus("sent");
+    } catch {
+      setErrorMsg("No se pudo conectar con el servidor. Inténtalo de nuevo.");
+      setStatus("error");
+    }
+  };
+
+  const reset = () => {
+    setStatus("idle");
+    setErrorMsg("");
+    setForm({ name: "", email: "", msg: "" });
+  };
+
+  return (
+    <form className={"contact-form" + (shake ? " shake" : "")} onSubmit={onSubmit}>
+      {status !== "sent" ? (
+        <>
+          <div className="field">
+            <label>NOMBRE</label>
+            <input
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="px_kai"
+            />
+          </div>
+          <div className="field">
+            <label>CORREO ELECTRÓNICO</label>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="jugador@vault.gg"
+            />
+          </div>
+          <div className="field">
+            <label>MENSAJE</label>
+            <textarea
+              rows={5}
+              value={form.msg}
+              onChange={(e) => setForm({ ...form, msg: e.target.value })}
+              placeholder="Cuéntanos qué tienes en mente…"
+            ></textarea>
+          </div>
+          {status === "error" && <div className="contact-error">▸ {errorMsg}</div>}
+          <button
+            className="btn xl press"
+            type="submit"
+            style={{ width: "100%" }}
+            disabled={status === "sending"}
+          >
+            {status === "sending" ? "ENVIANDO…" : "▶  ENVIAR MENSAJE"}
+          </button>
+        </>
+      ) : (
+        <div className="terminal-success">
+          <div className="term-bar">
+            <span className="dot r"></span>
+            <span className="dot y"></span>
+            <span className="dot g"></span>
+            <span className="term-title">VAULT-OS // TERMINAL</span>
+          </div>
+          <div className="term-body">
+            <div className="line">
+              <span className="prompt">vault@arcade:~$</span> ./send_message --to=team
+            </div>
+            <div className="line dim">[OK] Conectando con servidor…</div>
+            <div className="line dim">[OK] Validando contenido…</div>
+            <div className="line dim">[OK] Transmitiendo paquete…</div>
+            <div className="line success">
+              &gt; MENSAJE RECIBIDO. TE RESPONDEREMOS PRONTO. GRACIAS, {sentName.toUpperCase()}.
+              <span className="caret">_</span>
+            </div>
+            <div style={{ marginTop: 18 }}>
+              <button className="btn ghost" type="button" onClick={reset}>
+                ENVIAR OTRO MENSAJE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </form>
+  );
+}
+
 export default function About() {
   useReveal();
 
@@ -96,6 +216,33 @@ export default function About() {
         </div>
         <div className="div-bar"></div>
       </div>
+
+      {/* CONTACT */}
+      <section className="about-contact reveal">
+        <div className="contact-grid">
+          <div className="contact-intro">
+            <div className="kicker pixel neon-cyan">▸ CONTACTO</div>
+            <h2 className="contact-title">CONTÁCTANOS</h2>
+            <p className="contact-sub">
+              ¿Tienes alguna sugerencia, quieres proponer un juego, o simplemente quieres saludar?
+              Escríbenos.
+            </p>
+            <div className="contact-tips">
+              <div className="tip">
+                <span className="tip-led"></span>RESPUESTA EN 24-48H
+              </div>
+              <div className="tip">
+                <span className="tip-led y"></span>SUGERENCIAS BIENVENIDAS
+              </div>
+              <div className="tip">
+                <span className="tip-led m"></span>SIN SPAM, JAMÁS
+              </div>
+            </div>
+          </div>
+
+          <ContactForm />
+        </div>
+      </section>
     </div>
   );
 }
