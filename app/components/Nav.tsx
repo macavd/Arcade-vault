@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/", label: "Inicio", match: (p: string) => p === "/" },
   { href: "/games", label: "Biblioteca", match: (p: string) => p === "/games" || p.startsWith("/juego") },
   { href: "/salon", label: "Salón de la Fama", match: (p: string) => p.startsWith("/salon") },
+  { href: "/about", label: "Acerca de", match: (p: string) => p.startsWith("/about") },
 ] as const;
 
 export default function Nav() {
