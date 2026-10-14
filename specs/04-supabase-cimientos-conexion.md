@@ -1,6 +1,6 @@
 # SPEC 04 — Cimientos de Supabase: cliente y conexión
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** Ninguna
 > **Date:** 2026-10-07
 > **Objective:** Integrar el cliente de Supabase (`@supabase/ssr`) en el App Router con helpers de browser y server, configurado por variables de entorno y verificable con un endpoint de salud.
