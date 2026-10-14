@@ -3,7 +3,7 @@ name: spec-impl
 description: Implements an approved spec. Validates that the state means "Approved" (in any language), creates a git branch named after the spec, switches to it, and starts the implementation step by step with pauses to review diffs.
 disable-model-invocation: true
 argument-hint: <NN-spec-name>
-allowed-tools: Read, Glob, Grep, Edit, Write, AskUserQuestion, Bash(git status:*), Bash(git branch:*), Bash(git checkout:*), Bash(git log:*), Bash(git diff:*), Bash(git stash:*), Bash(cat:*), Bash(ls:*)
+allowed-tools: Read, Glob, Grep, Edit, Write, AskUserQuestion, Bash(git status:*), Bash(git branch:*), Bash(git checkout:*), Bash(git log:*), Bash(git diff:*), Bash(git stash:*), Bash(cat:*), Bash(ls:*), Bash(if:*), Bash(Test-Path:*), Bash(Get-ChildItem:*), Bash(Get-Content:*)
 ---
 
 # /spec-impl — Implementer of approved specs
@@ -17,10 +17,10 @@ Current branch:
 !`git branch --show-current`
 
 Specs available in this folder:
-!`ls specs/ 2>/dev/null || echo "The specs/ folder does not exist"`
+!`if (Test-Path specs) { Get-ChildItem specs -Name } else { "The specs/ folder does not exist" }`
 
 Branch-creation config:
-!`cat specs/.spec-config.yml 2>/dev/null || echo "AutoCreateBranch: true (default, no config file)"`
+!`if (Test-Path specs/.spec-config.yml) { Get-Content specs/.spec-config.yml } else { "AutoCreateBranch: true (default, no config file)" }`
 
 ---
 
