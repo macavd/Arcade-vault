@@ -1,6 +1,6 @@
 # SPEC 05 — Primer juego real: Asteroids ("ROCAS") sobre el reproductor
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** Ninguna (el reproductor y `data.ts` ya existen; no toca Supabase)
 > **Date:** 2026-10-14
 > **Objective:** Montar el juego de asteroides ya construido (`references/started-games/02-asteroids`) como el primer juego jugable real de la plataforma, adaptando el canvas vanilla a un componente cliente de Next 16, conectado al HUD y al flujo de "guardar puntuación" existentes, y detrás de un **registro de juegos por `id`** que deje el patrón listo para enchufar más motores.
