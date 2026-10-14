@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GAMES, seededScores } from "../../lib/data";
-
-export default async function GameDetailPage({ params }: PageProps<"/juego/[id]">) {
+import { getGameById } from "../../lib/db/games";
+import { getTopScores } from "../../lib/db/scores";
+export default async function GameDetailPage({
+  params,
+}: PageProps<"/juego/[id]">) {
   const { id } = await params;
-  const game = GAMES.find((g) => g.id === id);
+  const game = await getGameById(id);
   if (!game) notFound();
-
-  const scores = seededScores(id.length * 17 + 3, 10);
-
+  const scores = await getTopScores(id, 10);
   return (
     <div className="av-detail fade-in">
       <div>
@@ -33,7 +33,10 @@ export default async function GameDetailPage({ params }: PageProps<"/juego/[id]"
               <div className="l">Mejor global</div>
               <div
                 className="v"
-                style={{ color: "var(--magenta)", textShadow: "0 0 6px rgba(255,0,110,0.5)" }}
+                style={{
+                  color: "var(--magenta)",
+                  textShadow: "0 0 6px rgba(255,0,110,0.5)",
+                }}
               >
                 {game.best.toLocaleString("es-ES")}
               </div>
@@ -42,7 +45,10 @@ export default async function GameDetailPage({ params }: PageProps<"/juego/[id]"
               <div className="l">Dificultad</div>
               <div
                 className="v"
-                style={{ color: "var(--yellow)", textShadow: "0 0 6px rgba(245,255,0,0.5)" }}
+                style={{
+                  color: "var(--yellow)",
+                  textShadow: "0 0 6px rgba(245,255,0,0.5)",
+                }}
               >
                 ★ ★ ★ ☆ ☆
               </div>
@@ -50,7 +56,7 @@ export default async function GameDetailPage({ params }: PageProps<"/juego/[id]"
           </div>
           <div className="detail-actions">
             <Link href={`/jugar/${game.id}`} className="btn xl pulse">
-              ▶  JUGAR AHORA
+              ▶ JUGAR AHORA
             </Link>
             <Link href="/games" className="btn ghost lg">
               VOLVER AL VAULT
@@ -58,7 +64,6 @@ export default async function GameDetailPage({ params }: PageProps<"/juego/[id]"
           </div>
         </div>
       </div>
-
       <aside>
         <div className="leaderboard">
           <h3>MEJORES PUNTUACIONES</h3>
