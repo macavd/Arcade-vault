@@ -1,48 +1,53 @@
 "use client";
-
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { notFound, useRouter } from "next/navigation";
 import { GAMES } from "../../lib/data";
 import { useSession } from "../../components/SessionProvider";
-
+import { getGameEngine } from "../../lib/games/registry";
+import CanvasGame, {
+  type CanvasGameHandle,
+} from "../../components/games/CanvasGame";
 export default function GamePlayerPage({ params }: PageProps<"/jugar/[id]">) {
   const { id } = use(params);
   const router = useRouter();
   const { user } = useSession();
   const game = GAMES.find((g) => g.id === id);
-
+  // Si el id tiene motor registrado, se juega el juego real; si no, maqueta.
+  const hasEngine = getGameEngine(id) !== null;
+  const canvasGameRef = useRef<CanvasGameHandle>(null);
   const [score, setScore] = useState(0);
-  const [lives] = useState(3);
+  const [lives, setLives] = useState(3);
   const [level, setLevel] = useState(1);
   const [paused, setPaused] = useState(false);
   const [over, setOver] = useState(false);
   const [name, setName] = useState(user ? user.name : "INVITADO");
   const [saved, setSaved] = useState(false);
-
+  // Puntuacion mock: solo para las maquetas (ids sin motor). Con motor, el
+  // score lo alimenta la callback onScore del juego real.
   useEffect(() => {
-    if (over || paused) return;
+    if (hasEngine || over || paused) return;
     const t = setInterval(
       () => setScore((s) => s + Math.floor(10 + Math.random() * 90)),
       220,
     );
     return () => clearInterval(t);
-  }, [over, paused]);
-
+  }, [hasEngine, over, paused]);
   useEffect(() => {
+    if (hasEngine) return;
     if (score > 0 && score % 2500 < 100) setLevel((l) => l + 1);
-  }, [score]);
-
+  }, [hasEngine, score]);
   if (!game) notFound();
-
   const endGame = () => setOver(true);
   const restart = () => {
     setScore(0);
+    setLives(3);
     setLevel(1);
     setPaused(false);
     setOver(false);
     setSaved(false);
+    // Reinicia tambien el motor del juego real (si lo hay).
+    canvasGameRef.current?.restart();
   };
-
   return (
     <div className="av-player fade-in">
       <div className="player-hud">
@@ -73,23 +78,43 @@ export default function GamePlayerPage({ params }: PageProps<"/jugar/[id]">) {
           <button className="btn magenta" onClick={endGame}>
             FIN
           </button>
-          <button className="btn ghost" onClick={() => router.push(`/juego/${game.id}`)}>
+          <button
+            className="btn ghost"
+            onClick={() => router.push(`/juego/${game.id}`)}
+          >
             SALIR
           </button>
         </div>
       </div>
-
       <div className="crt">
         <div className="crt-screen">
-          <div className="game-arena">
-            <div className="grid-floor" />
-            <div className="enemy e1" />
-            <div className="enemy e2" />
-            <div className="enemy e3" />
-            <div className="player-ship" />
-          </div>
+          {hasEngine ? (
+            <CanvasGame
+              ref={canvasGameRef}
+              gameId={id}
+              paused={paused}
+              onScore={setScore}
+              onLives={setLives}
+              onLevel={setLevel}
+              onGameOver={(finalScore) => {
+                setScore(finalScore);
+                setOver(true);
+              }}
+            />
+          ) : (
+            <div className="game-arena">
+              <div className="grid-floor" />
+              <div className="enemy e1" />
+              <div className="enemy e2" />
+              <div className="enemy e3" />
+              <div className="player-ship" />
+            </div>
+          )}
           {paused && (
-            <div className="crt-content" style={{ background: "rgba(0,0,0,0.6)", zIndex: 5 }}>
+            <div
+              className="crt-content"
+              style={{ background: "rgba(0,0,0,0.6)", zIndex: 5 }}
+            >
               <div>
                 <div className="pixel neon-yellow" style={{ fontSize: 22 }}>
                   EN PAUSA
@@ -115,7 +140,6 @@ export default function GamePlayerPage({ params }: PageProps<"/jugar/[id]">) {
           <span>CARGA · 1MB</span>
         </div>
       </div>
-
       {over && (
         <div className="modal-bd">
           <div className="modal">
@@ -126,7 +150,9 @@ export default function GamePlayerPage({ params }: PageProps<"/jugar/[id]">) {
               <div className="input-row">
                 <input
                   value={name}
-                  onChange={(e) => setName(e.target.value.toUpperCase().slice(0, 10))}
+                  onChange={(e) =>
+                    setName(e.target.value.toUpperCase().slice(0, 10))
+                  }
                   placeholder="TUS INICIALES"
                 />
                 <button className="btn yellow" onClick={() => setSaved(true)}>
@@ -140,7 +166,10 @@ export default function GamePlayerPage({ params }: PageProps<"/jugar/[id]">) {
               <button className="btn" onClick={restart}>
                 JUGAR DE NUEVO
               </button>
-              <button className="btn magenta" onClick={() => router.push("/games")}>
+              <button
+                className="btn magenta"
+                onClick={() => router.push("/games")}
+              >
                 VOLVER AL VAULT
               </button>
             </div>

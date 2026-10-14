@@ -2,8 +2,8 @@
 name: spec
 description: Designs and develops specs following the spec-driven method. Asks clarifying questions before proposing structure, and builds the spec section by section. Use it when starting a large feature, before writing code.
 disable-model-invocation: true
-argument-hint: 'short feature description or requirement'
-allowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(ls:*), Bash(cat:*), Bash(date:*)
+argument-hint: "short feature description or requirement"
+allowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(ls:*), Bash(cat:*), Bash(date:*), Bash(if:*), Bash(Test-Path:*), Bash(Get-ChildItem:*), Bash(Get-Content:*), Bash(Get-Date:*)
 ---
 
 # /spec — Guided spec designer
@@ -11,10 +11,10 @@ allowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(ls:*), Bash(cat:*)
 ## Session context
 
 Today's date (use this for the spec header, never guess it):
-!`date +%F`
+!`Get-Date -Format yyyy-MM-dd`
 
 Specs that already exist:
-!`ls specs/ 2>/dev/null || echo "The specs/ folder does not exist yet"`
+!`if (Test-Path specs) { Get-ChildItem specs -Name } else { "The specs/ folder does not exist yet" }`
 
 ---
 
