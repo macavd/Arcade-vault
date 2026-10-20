@@ -2,14 +2,16 @@
 //
 // Asocia cada id con la fabrica de su motor. Los ids sin motor registrado
 // resuelven a null y el reproductor (app/jugar/[id]) conserva la maqueta.
-// Hoy solo "rocas" resuelve a un motor real (Asteroids); el patron deja
-// enchufables a futuro Tetris ("caida") y Arkanoid ("bloque-buster") sin
-// tocar el reproductor.
+// "rocas" resuelve al motor de Asteroids (SPEC 05) y "caida" al de Tetris
+// (SPEC 07); el patron deja enchufables los demas ids (p.ej. Arkanoid
+// "bloque-buster") sin tocar el reproductor.
 import type { GameFactory } from "./types";
 import { createAsteroidsGame } from "./asteroids/engine";
+import { createCaidaGame } from "./caida/engine";
 const REGISTRY: Record<string, GameFactory | undefined> = {
   rocas: createAsteroidsGame,
-  // bloque-buster, caida, serpentina, gloton, invasores, ranaria, duelo-pixel
+  caida: createCaidaGame,
+  // bloque-buster, serpentina, gloton, invasores, ranaria, duelo-pixel
   // → undefined (maqueta)
 };
 export function getGameEngine(id: string): GameFactory | null {
