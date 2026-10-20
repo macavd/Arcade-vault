@@ -1,6 +1,6 @@
 # SPEC 07 — Motor de Tetris para "CAÍDA": la maqueta `caida` pasa a jugable
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 05, SPEC 06
 > **Date:** 2026-10-20
 > **Objective:** Portar el Tetris de `references/started-games/03-tetris` a `app/lib/games/caida/engine.ts` y registrarlo, de modo que el juego `caida` (CAÍDA), hoy maqueta pero ya presente en el catálogo y el leaderboard desde la SPEC 06, se convierta en jugable reusando el patrón de motor de la SPEC 05.
