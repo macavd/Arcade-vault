@@ -13,14 +13,14 @@ allowed-tools: Read, Glob, Grep, Write, AskUserQuestion, PowerShell(Get-Date:*),
 Fecha de hoy (úsala para el campo `**Date:**` de la spec, nunca la inventes):
 !`Get-Date -Format yyyy-MM-dd`
 
-Specs que ya existen:
-!`if (Test-Path specs) { Get-ChildItem specs -Name } else { "No existe la carpeta specs/ todavía" }`
+Specs que ya existen (vacío = aún no hay carpeta `specs/`):
+!`Get-ChildItem specs -Name -ErrorAction SilentlyContinue`
 
 Juegos de referencia disponibles para portar:
-!`if (Test-Path references/started-games) { Get-ChildItem references/started-games -Name } else { "No hay references/started-games" }`
+!`Get-ChildItem references/started-games -Name -ErrorAction SilentlyContinue`
 
-Slugs de juego ya ocupados en el registro de motores (no los reutilices):
-!`if (Test-Path app/lib/games/registry.ts) { Get-Content app/lib/games/registry.ts } else { "No existe app/lib/games/registry.ts" }`
+Slugs de juego ya ocupados en el registro de motores (no los reutilices; vacío = aún no existe `registry.ts`):
+!`Get-Content app/lib/games/registry.ts -ErrorAction SilentlyContinue`
 
 ---
 
