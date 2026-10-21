@@ -1,6 +1,6 @@
 # SPEC 08 — Motor de Arkanoid para "BLOQUE BUSTER": la maqueta `bloque-buster` pasa a jugable
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 05, SPEC 06
 > **Date:** 2026-10-20
 > **Objective:** Portar el Arkanoid de `references/started-games/04-arkanoid` a `app/lib/games/bloque-buster/engine.ts` (con sus assets) y registrarlo, de modo que el juego `bloque-buster` (BLOQUE BUSTER), hoy maqueta pero ya presente en el catálogo y el leaderboard desde la SPEC 06, se convierta en jugable reusando el patrón de motor de la SPEC 05.
