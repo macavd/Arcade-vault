@@ -1,6 +1,6 @@
 # SPEC 09 — Motor de Snake para "SERPENTINA": la maqueta `serpentina` pasa a jugable
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 05, SPEC 06
 > **Date:** 2026-10-21
 > **Objective:** Portar el Snake de `references/started-games/05-snake` (con su sprite de frutas) a `app/lib/games/serpentina/engine.ts` y registrarlo, de modo que el juego `serpentina` (SERPENTINA), hoy maqueta pero ya presente en el catálogo y el leaderboard desde la SPEC 06, se convierta en jugable reusando el patrón de motor de la SPEC 05.
