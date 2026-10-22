@@ -11,6 +11,7 @@ Arcade Vault is a platform for playing classic arcade games online and competing
 - **Usa siempre `/frontend-design` para diseñar la interfaz de usuario** (UI, portadas `.cover-*`, estética neón/CRT).
 - **`/spec` + `/spec-impl`** (from [Klerith/fernando-skills](https://github.com/Klerith/fernando-skills)) drive the spec-first workflow. Specs live in `specs/NN-slug.md`; `.agents/skills/spec/` holds the vendored copies.
 - **`/spec-juego`** (project-local, `.claude/skills/spec-juego/`) — generates a spec (no code) for adding a new game with a leaderboard, combining the engine pattern of SPEC 05 with the catalog/leaderboard pattern of SPEC 06. Use it to add or port a game from `references/started-games/`; it leaves the spec in `Draft` for `/spec-impl`.
+- **`game-planner`** subagent (project-local, `.claude/agents/game-planner.md`) — recommended upstream step before `/spec-juego`. It decides _which_ game to add (slug, category, color, descriptions, port candidate, pitfalls, rationale) validated against the catalog, and logs each suggestion to `references/game-suggestions-todo.md` so it doesn't repeat. It only recommends — no spec, no code.
 
 Note (from memory): the `/spec*` skills were adapted to PowerShell; avoid braces inside quotes in their shell snippets (the permission checker blocks them).
 
