@@ -42,4 +42,10 @@ Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
 - [ ] **asfalto** — ASFALTO · VERSUS/green · 2026-10-21 — Pole Position: carreras vs CPU (refuerza VERSUS). Pitfall = render pseudo-3D de carretera (mayor riesgo).
 - [ ] **canasta** — CANASTA · ARCADE/yellow · 2026-10-21 — Tiro a canasta por tiempo: ángulo+fuerza, aro móvil, rachas. Partida por tiempo → onGameOver sin onLives.
 
+### Tanda game-jam 2026-10-23 — tema "Cruzar obstáculos sin morir en el intento"
+
+- [ ] **ranaria** — RANARIA · ARCADE/green · 2026-10-23 — Frogger (juego central de la jam): "Cruza la carretera y el río sin convertirte en papilla". YA existe en el catálogo como maqueta (SPEC 06); la spec es solo de MOTOR (patrón SPEC 09) + rediseño de portada. Specs en `specs/game-jam/ranaria/`. Necesita prototipo nuevo (`06-frogger`).
+- [ ] **turbovia** — TURBOVÍA · ARCADE/cyan · 2026-10-23 — Road Fighter: conducir a toda velocidad esquivando tráfico en carretera con scroll vertical. Mismo tema que Frogger (esquivar sin morir) pero control continuo de vehículo, no saltos por rejilla. Specs en `specs/game-jam/turbovia/`. Necesita prototipo nuevo (`07-road-fighter`).
+- [ ] **patrulla-lunar** — PATRULLA LUNAR · SHOOTER/yellow · 2026-10-23 — Moon Patrol: buggy que cruza terreno lunar saltando cráteres y disparando rocas/OVNIs. Auto-runner salto+disparo; aporta categoría SHOOTER y color yellow a la tanda. Specs en `specs/game-jam/patrulla-lunar/`. Necesita prototipo nuevo (`08-moon-patrol`).
+
 ## Descartados / implementados
