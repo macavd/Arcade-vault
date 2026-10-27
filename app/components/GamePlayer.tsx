@@ -2,8 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Game } from "../lib/data";
+import type { GameSkin } from "../lib/games/types";
 import { useSession } from "./SessionProvider";
 import { getGameEngine } from "../lib/games/registry";
+import { getAvailableSkins, SKIN_LABELS } from "../lib/games/skins";
 import CanvasGame, { type CanvasGameHandle } from "./games/CanvasGame";
 export default function GamePlayer({ game }: { game: Game }) {
   const router = useRouter();
@@ -11,7 +13,13 @@ export default function GamePlayer({ game }: { game: Game }) {
   const id = game.id;
   // Si el id tiene motor registrado, se juega el juego real; si no, maqueta.
   const hasEngine = getGameEngine(id) !== null;
+  // Skins disponibles del juego (null si no tiene sistema de skins). El primero
+  // es el default; solo se muestra selector si la lista existe.
+  const availableSkins = getAvailableSkins(id);
   const canvasGameRef = useRef<CanvasGameHandle>(null);
+  const [skin, setSkin] = useState<GameSkin>(
+    availableSkins ? availableSkins[0] : "clasico",
+  );
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [level, setLevel] = useState(1);
@@ -47,6 +55,21 @@ export default function GamePlayer({ game }: { game: Game }) {
     setSaveError(null);
     // Reinicia tambien el motor del juego real (si lo hay).
     canvasGameRef.current?.restart();
+  };
+  const changeSkin = (next: GameSkin) => {
+    if (next === skin) return;
+    // Cambiar de tema reinstancia el motor (CanvasGame lo recrea al cambiar la
+    // prop skin), lo que reinicia la partida. Reseteamos el HUD y los modales
+    // para que la UI quede coherente con la partida nueva.
+    setSkin(next);
+    setScore(0);
+    setLives(3);
+    setLevel(1);
+    setPaused(false);
+    setOver(false);
+    setSaved(false);
+    setSaving(false);
+    setSaveError(null);
   };
   const saveScore = async () => {
     setSaving(true);
@@ -92,6 +115,29 @@ export default function GamePlayer({ game }: { game: Game }) {
             <div className="v">{String(level).padStart(2, "0")}</div>
           </div>
         </div>
+        {hasEngine && availableSkins && (
+          <div
+            className="theme-select"
+            role="radiogroup"
+            aria-label="Tema del juego"
+          >
+            <span className="theme-select-label">Tema</span>
+            <div className="theme-opts">
+              {availableSkins.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  role="radio"
+                  aria-checked={skin === s}
+                  className={`theme-opt is-${s}${skin === s ? " active" : ""}`}
+                  onClick={() => changeSkin(s)}
+                >
+                  {SKIN_LABELS[s]}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="hud-actions">
           <button className="btn yellow" onClick={() => setPaused((p) => !p)}>
             {paused ? "REANUDAR" : "PAUSA"}
@@ -114,6 +160,7 @@ export default function GamePlayer({ game }: { game: Game }) {
               ref={canvasGameRef}
               gameId={id}
               paused={paused}
+              skin={skin}
               onScore={setScore}
               onLives={setLives}
               onLevel={setLevel}

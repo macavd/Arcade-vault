@@ -9,8 +9,9 @@
 // aceleracion se agrupa en tramos de TIER_SIZE frutas para que velocidad y
 // nivel avancen juntos. Notifica score/vidas/nivel/fin a React via callbacks;
 // no dibuja HUD en el canvas (de eso se encarga .player-hud en React).
-import type { GameCallbacks, GameEngine, GameFactory } from "../types";
+import type { GameCallbacks, GameEngine, GameFactory, GameSkin } from "../types";
 import { FRUITS, FRUIT_KEYS, getFruitsImage, loadFruits } from "./sprites";
+import { getSerpentinaSkin } from "./skins";
 // ── Rejilla / resolucion interna ─────────────────────────────────────────────
 const CELL = 25;
 const W = 800;
@@ -33,10 +34,14 @@ interface Food extends Cell {
 export const createSerpentinaGame: GameFactory = (
   canvas: HTMLCanvasElement,
   callbacks: GameCallbacks,
+  skin: GameSkin = "clasico",
 ): GameEngine => {
   const ctx = canvas.getContext("2d")!;
   canvas.width = W;
   canvas.height = H;
+  // Paleta del skin activo, resuelta una vez (CanvasGame reinstancia el motor
+  // al cambiar de skin). draw()/drawFood()/drawSnake() leen cada rol de aqui.
+  const palette = getSerpentinaSkin(skin);
   // Carga perezosa del sprite de frutas (idempotente, compartido entre
   // instancias). Hasta que carga, drawFood dibuja un circulo de reserva.
   loadFruits();
@@ -157,10 +162,10 @@ export const createSerpentinaGame: GameFactory = (
   };
   // ── Render ─────────────────────────────────────────────────────────────────
   function draw() {
-    ctx.fillStyle = "#05080a";
+    ctx.fillStyle = palette.bg;
     ctx.fillRect(0, 0, W, H);
     // Cuadricula tenue
-    ctx.strokeStyle = "rgba(0, 255, 160, 0.05)";
+    ctx.strokeStyle = palette.grid;
     ctx.lineWidth = 1;
     for (let x = 0; x <= COLS; x++) {
       ctx.beginPath();
@@ -199,7 +204,7 @@ export const createSerpentinaGame: GameFactory = (
         dh,
       );
     } else {
-      ctx.fillStyle = "#ff3b6b";
+      ctx.fillStyle = palette.foodFallback;
       ctx.beginPath();
       ctx.arc(px + CELL / 2, py + CELL / 2, CELL / 3, 0, Math.PI * 2);
       ctx.fill();
@@ -209,16 +214,16 @@ export const createSerpentinaGame: GameFactory = (
     for (let i = snake.length - 1; i >= 0; i--) {
       const seg = snake[i]!;
       const head = i === 0;
-      ctx.fillStyle = head ? "#5dffb0" : "#17c98a";
-      ctx.shadowColor = "#00ffa0";
-      ctx.shadowBlur = head ? 16 : 8;
+      ctx.fillStyle = head ? palette.head : palette.body;
+      ctx.shadowColor = palette.glowColor;
+      ctx.shadowBlur = head ? palette.glowHead : palette.glowBody;
       roundRect(seg.x * CELL + 2, seg.y * CELL + 2, CELL - 4, CELL - 4, 6);
       ctx.fill();
     }
     ctx.shadowBlur = 0;
     // Ojos en la cabeza, orientados segun la direccion.
     const h = snake[0]!;
-    ctx.fillStyle = "#05080a";
+    ctx.fillStyle = palette.eye;
     const cx = h.x * CELL + CELL / 2;
     const cy = h.y * CELL + CELL / 2;
     const off = 4;
