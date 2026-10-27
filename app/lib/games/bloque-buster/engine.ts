@@ -11,7 +11,7 @@
 // en canvas, los overlays (PAUSA/GAME OVER/victoria) y el selector de nivel del
 // original. El estado se notifica a React via callbacks; la victoria (nivel 5
 // completado) se trata como fin de partida (onGameOver).
-import type { GameCallbacks, GameEngine, GameFactory } from "../types";
+import type { GameCallbacks, GameEngine, GameFactory, GameSkin } from "../types";
 import {
   drawFrame,
   drawSprite,
@@ -20,12 +20,18 @@ import {
   loadSpritesheet,
 } from "./sprites";
 import { LEVELS } from "./levels";
+import { getBloqueBusterSkin } from "./skins";
 export const createBloqueBusterGame: GameFactory = (
   canvas: HTMLCanvasElement,
   callbacks: GameCallbacks,
+  skin: GameSkin = "clasico",
 ): GameEngine => {
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("No se pudo obtener el contexto 2d del canvas");
+  // Paleta del skin activo, resuelta una vez (CanvasGame reinstancia el motor
+  // al cambiar de skin). El atlas tiene los colores horneados, asi que el skin
+  // actua sobre el fondo + ctx.filter (recoloreo) + glow; ver skins.ts.
+  const palette = getBloqueBusterSkin(skin);
   const W = 800;
   const H = 600;
   canvas.width = W;
@@ -219,8 +225,14 @@ export const createBloqueBusterGame: GameFactory = (
   }
   // ── Draw ──────────────────────────────────────────────────────────────────
   function draw() {
-    ctx!.fillStyle = "#000";
+    // Fondo primero, sin filtro ni glow (solo afecta a los sprites del atlas).
+    ctx!.fillStyle = palette.bg;
     ctx!.fillRect(0, 0, W, H);
+    // A partir de aqui todo lo que se dibuja desde el atlas hereda el recoloreo
+    // y el halo del skin; se resetean al final del frame.
+    ctx!.filter = palette.spriteFilter;
+    ctx!.shadowColor = palette.glowColor;
+    ctx!.shadowBlur = palette.glowBlur;
     for (const block of blocks) {
       if (block.alive)
         drawSprite(
@@ -248,6 +260,9 @@ export const createBloqueBusterGame: GameFactory = (
     }
     drawSprite(ctx!, "paddle", paddle.x, paddle.y, paddle.w, paddle.h);
     drawSprite(ctx!, "ball", ball.x, ball.y, ball.w, ball.h);
+    // Reset para no filtrar/iluminar el fondo del siguiente frame.
+    ctx!.filter = "none";
+    ctx!.shadowBlur = 0;
   }
   // ── Puente a React (callbacks solo ante cambios) ──────────────────────────
   let lastScore = -1;

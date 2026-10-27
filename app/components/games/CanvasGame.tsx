@@ -1,13 +1,16 @@
 "use client";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { getGameEngine } from "../../lib/games/registry";
-import type { GameEngine } from "../../lib/games/types";
+import type { GameEngine, GameSkin } from "../../lib/games/types";
 export interface CanvasGameHandle {
   restart: () => void;
 }
 interface CanvasGameProps {
   gameId: string;
   paused: boolean;
+  // Skin seleccionado del juego (SPEC 10). Opcional con default "clasico"
+  // mientras no exista selector en la UI; el motor lo recibe como 3er argumento.
+  skin?: GameSkin;
   onScore: (score: number) => void;
   onLives: (lives: number) => void;
   onLevel: (level: number) => void;
@@ -18,7 +21,7 @@ interface CanvasGameProps {
 // listeners), evitando dobles loops al reentrar a la ruta en el App Router.
 const CanvasGame = forwardRef<CanvasGameHandle, CanvasGameProps>(
   function CanvasGame(
-    { gameId, paused, onScore, onLives, onLevel, onGameOver },
+    { gameId, paused, skin = "clasico", onScore, onLives, onLevel, onGameOver },
     ref,
   ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,19 +35,25 @@ const CanvasGame = forwardRef<CanvasGameHandle, CanvasGameProps>(
       if (!canvas) return;
       const factory = getGameEngine(gameId);
       if (!factory) return;
-      const engine = factory(canvas, {
-        onScore: (n) => cbRef.current.onScore(n),
-        onLives: (n) => cbRef.current.onLives(n),
-        onLevel: (n) => cbRef.current.onLevel(n),
-        onGameOver: (n) => cbRef.current.onGameOver(n),
-      });
+      const engine = factory(
+        canvas,
+        {
+          onScore: (n) => cbRef.current.onScore(n),
+          onLives: (n) => cbRef.current.onLives(n),
+          onLevel: (n) => cbRef.current.onLevel(n),
+          onGameOver: (n) => cbRef.current.onGameOver(n),
+        },
+        skin,
+      );
       engineRef.current = engine;
       engine.start();
       return () => {
         engine.destroy();
         engineRef.current = null;
       };
-    }, [gameId]);
+      // El skin se fija al crear el motor; cambiarlo reinstancia (reinicia la
+      // partida), aceptable mientras no exista selector en vivo.
+    }, [gameId, skin]);
     // Conecta la bandera paused de React al pause()/resume() del motor.
     useEffect(() => {
       const engine = engineRef.current;
