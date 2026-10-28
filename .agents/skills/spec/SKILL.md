@@ -14,7 +14,7 @@ Today's date (use this for the spec header, never guess it):
 !`Get-Date -Format yyyy-MM-dd`
 
 Specs that already exist:
-!`if (Test-Path specs) { Get-ChildItem specs -Name } else { "The specs/ folder does not exist yet" }`
+!`Get-ChildItem specs -Name -ErrorAction SilentlyContinue`
 
 ---
 

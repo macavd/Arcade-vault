@@ -17,10 +17,10 @@ Current branch:
 !`git branch --show-current`
 
 Specs available in this folder:
-!`if (Test-Path specs) { Get-ChildItem specs -Name } else { "The specs/ folder does not exist" }`
+!`Get-ChildItem specs -Name -ErrorAction SilentlyContinue`
 
 Branch-creation config:
-!`if (Test-Path specs/.spec-config.yml) { Get-Content specs/.spec-config.yml } else { "AutoCreateBranch: true (default, no config file)" }`
+!`Get-Content specs/.spec-config.yml -ErrorAction SilentlyContinue`
 
 ---
 
