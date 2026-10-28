@@ -4,6 +4,9 @@ import { getGameEngine } from "../../lib/games/registry";
 import type { GameEngine, GameSkin } from "../../lib/games/types";
 export interface CanvasGameHandle {
   restart: () => void;
+  // Expone el <canvas> montado (SPEC 13): el arrastre de pala de bloque-buster
+  // necesita despachar mousemove sintéticos sobre este elemento.
+  getCanvas: () => HTMLCanvasElement | null;
 }
 interface CanvasGameProps {
   gameId: string;
@@ -65,6 +68,7 @@ const CanvasGame = forwardRef<CanvasGameHandle, CanvasGameProps>(
       ref,
       () => ({
         restart: () => engineRef.current?.restart(),
+        getCanvas: () => canvasRef.current,
       }),
       [],
     );

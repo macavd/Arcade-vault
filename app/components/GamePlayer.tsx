@@ -7,6 +7,7 @@ import { useSession } from "./SessionProvider";
 import { getGameEngine } from "../lib/games/registry";
 import { getAvailableSkins, SKIN_LABELS } from "../lib/games/skins";
 import CanvasGame, { type CanvasGameHandle } from "./games/CanvasGame";
+import TouchControls from "./games/TouchControls";
 export default function GamePlayer({ game }: { game: Game }) {
   const router = useRouter();
   const { user } = useSession();
@@ -202,6 +203,13 @@ export default function GamePlayer({ game }: { game: Game }) {
             </div>
           )}
         </div>
+        {hasEngine && (
+          <TouchControls
+            gameId={id}
+            canvasRef={canvasGameRef}
+            disabled={paused || over}
+          />
+        )}
         <div className="crt-bottom">
           <span className="led">SEÑAL OK</span>
           <span>{game.title} · CRT-83 · 60 HZ</span>
