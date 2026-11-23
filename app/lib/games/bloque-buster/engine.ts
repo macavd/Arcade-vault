@@ -11,7 +11,12 @@
 // en canvas, los overlays (PAUSA/GAME OVER/victoria) y el selector de nivel del
 // original. El estado se notifica a React via callbacks; la victoria (nivel 5
 // completado) se trata como fin de partida (onGameOver).
-import type { GameCallbacks, GameEngine, GameFactory, GameSkin } from "../types";
+import type {
+  GameCallbacks,
+  GameEngine,
+  GameFactory,
+  GameSkin,
+} from "../types";
 import {
   drawFrame,
   drawSprite,
@@ -21,17 +26,21 @@ import {
 } from "./sprites";
 import { LEVELS } from "./levels";
 import { getBloqueBusterSkin } from "./skins";
+import { glowScale } from "../perf";
 export const createBloqueBusterGame: GameFactory = (
   canvas: HTMLCanvasElement,
   callbacks: GameCallbacks,
   skin: GameSkin = "clasico",
 ): GameEngine => {
-  const ctx = canvas.getContext("2d");
+  // Canvas opaco (SPEC 16): draw() rellena el frame completo cada vuelta.
+  const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("No se pudo obtener el contexto 2d del canvas");
   // Paleta del skin activo, resuelta una vez (CanvasGame reinstancia el motor
   // al cambiar de skin). El atlas tiene los colores horneados, asi que el skin
   // actua sobre el fondo + ctx.filter (recoloreo) + glow; ver skins.ts.
   const palette = getBloqueBusterSkin(skin);
+  // SPEC 16: atenúa el glow en móvil/reduced-motion (desktop = 1, sin cambio).
+  const GLOW = glowScale();
   const W = 800;
   const H = 600;
   canvas.width = W;
@@ -232,7 +241,7 @@ export const createBloqueBusterGame: GameFactory = (
     // y el halo del skin; se resetean al final del frame.
     ctx!.filter = palette.spriteFilter;
     ctx!.shadowColor = palette.glowColor;
-    ctx!.shadowBlur = palette.glowBlur;
+    ctx!.shadowBlur = palette.glowBlur * GLOW;
     for (const block of blocks) {
       if (block.alive)
         drawSprite(

@@ -14,21 +14,25 @@ import type {
   GameSkin,
 } from "../types";
 import { getAsteroidsSkin } from "./skins";
+import { glowScale } from "../perf";
 export const createAsteroidsGame: GameFactory = (
   canvas: HTMLCanvasElement,
   callbacks: GameCallbacks,
   skin: GameSkin = "clasico",
 ): GameEngine => {
-  const ctx = canvas.getContext("2d");
+  // Canvas opaco (SPEC 16): draw() rellena el frame completo cada vuelta.
+  const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("No se pudo obtener el contexto 2d del canvas");
   // Paleta activa: el motor lee los colores por rol en vez de incrustarlos.
   // glowBlur 0 (clasico) deja el look plano original. (SPEC 10)
   const palette = getAsteroidsSkin(skin);
+  // SPEC 16: atenúa el glow en móvil/reduced-motion (desktop = 1, sin cambio).
+  const GLOW = glowScale();
   // Activa el glow del skin para los trazos vectoriales; clearGlow lo apaga
   // para elementos que deben quedar nitidos (fondo, texto del HUD/overlay).
   function applyGlow() {
     ctx!.shadowColor = palette.glowColor;
-    ctx!.shadowBlur = palette.glowBlur;
+    ctx!.shadowBlur = palette.glowBlur * GLOW;
   }
   function clearGlow() {
     ctx!.shadowBlur = 0;
