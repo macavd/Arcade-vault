@@ -18,6 +18,7 @@
 | `caida`          | CAÍDA         | ⬜        | ⬜     | ⬜      | No       | —            |
 | `bloque-buster`  | BLOQUE BUSTER | ✅        | ✅     | ✅      | Sí       | 2026-10-27   |
 | `serpentina`     | SERPENTINA    | ✅        | ✅     | ✅      | Sí       | 2026-10-27   |
+| `ranaria`        | RANARIA       | ⬜        | ⬜     | ⬜      | No       | 2026-11-04   |
 
 ## Juegos sin motor (fuera de alcance hasta que tengan motor)
 
@@ -27,7 +28,6 @@ Maquetas sin canvas que pintar; recibirán skins cuando aterrice su motor.
 | -------------- | ----------- | --------------- |
 | `gloton`       | GLOTÓN      | Maqueta, sin motor |
 | `invasores`    | INVASORES   | Maqueta, sin motor |
-| `ranaria`      | RANARIA     | Maqueta, sin motor |
 | `duelo-pixel`  | DUELO PÍXEL | Maqueta, sin motor |
 
 ## Historial
@@ -42,3 +42,4 @@ Append-only: una línea por cada vez que se aplica un skin a un juego.
 - 2026-10-27 · serpentina · spec specs/11-skins-serpentina.md creada (Draft) · clasico (default, verde sobrio sin glow), neon (verde fosforescente con glow, el look actual del motor), retro (fósforo ámbar/verde) reusando el sistema transversal de SPEC 10. El motor hoy ya pinta el look neon; el clasico se diseña nuevo. El sprite de la fruta no se retiñe. Skins aún ⬜: se marcarán ✅ al implementar con /spec-impl.
 - 2026-10-27 · serpentina · 3 skins aplicados en el motor · app/lib/games/serpentina/skins.ts (SerpentinaPalette: bg, grid, head, body, eye, foodFallback, glow head/body) + refactor de engine.ts para leer la paleta + alta en SKINNED_GAMES. El selector genérico de GamePlayer.tsx ya aparece. clasico/neon/retro → ✅.
 - 2026-10-27 · bloque-buster · 3 skins aplicados en el motor · app/lib/games/bloque-buster/skins.ts (BloqueBusterPalette: bg + spriteFilter con ctx.filter + glow shadow*, porque el atlas PNG trae los colores horneados) + refactor de engine.ts (filter/glow envuelven el dibujo del atlas, reset al final del frame) + alta en SKINNED_GAMES. clasico/neon/retro → ✅.
+- 2026-11-04 · ranaria · spec specs/14-skins-ranaria.md creada (Draft) · clasico (default, entorno naturalista actual con la rana sin glow), neon (escena saturada con el glow verde de la rana, acento --green de .cover-rana), retro (duotono fósforo ámbar/verde) reusando el sistema transversal de SPEC 10. Hallazgos: motor recién portado que ignora el skin (_skin) y no está en SKINNED_GAMES (sin selector aún); los colores de entidad viven en LANE_DEFS (no en draw*) con dos variantes de coche y de tronco, que el refactor saca a roles de paleta (carA/carB, logA/logB). Skins aún ⬜: se marcarán ✅ al implementar con /spec-impl.
