@@ -8,6 +8,7 @@ import { getGameEngine } from "../lib/games/registry";
 import { getAvailableSkins, SKIN_LABELS } from "../lib/games/skins";
 import CanvasGame, { type CanvasGameHandle } from "./games/CanvasGame";
 import TouchControls from "./games/TouchControls";
+import PerfOverlay from "./games/PerfOverlay";
 export default function GamePlayer({ game }: { game: Game }) {
   const router = useRouter();
   const { user } = useSession();
@@ -156,6 +157,8 @@ export default function GamePlayer({ game }: { game: Game }) {
       </div>
       <div className="crt">
         <div className="crt-screen">
+          {/* SPEC 16: medición de fps/frame-time, solo en dev y con ?debug=perf. */}
+          <PerfOverlay />
           {hasEngine ? (
             <CanvasGame
               ref={canvasGameRef}

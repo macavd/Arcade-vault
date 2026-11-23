@@ -120,3 +120,16 @@ Cada paso deja la app compilando y navegable.
 - Auth real y vincular scores a un usuario.
 
 Cada uno de esos, si llega, va en su propia spec.
+
+---
+
+## Addendum (SPEC 16 — rendimiento)
+
+> **Fecha:** 2026-11-23 · **Origen:** SPEC 16 (Rendimiento de los motores). El estado de esta spec sigue siendo **Implementado**; este addendum solo deja constancia de los cambios de rendimiento que SPEC 16 aplicó a `app/lib/games/serpentina/engine.ts`. La lógica del motor (movimiento, muros mortales, anti-reversa 180°, +10/fruta, aceleración por tramos `TIER_SIZE = 5`) **no se tocó**.
+
+SPEC 16 atacó un cuello de botella **sistémico y compartido** (el compositing de las capas CRT/fondo sobre un canvas que repinta a 60 fps), no la lógica de ningún juego. Los dos únicos cambios que recibió `serpentina/engine.ts` fueron:
+
+1. **Canvas opaco.** El contexto pasó de `canvas.getContext("2d")` a `canvas.getContext("2d", { alpha: false })`. Es seguro porque `draw()` ya rellena el frame completo cada vuelta (`ctx.fillStyle = palette.bg; ctx.fillRect(0, 0, W, H)` al inicio). Con el canvas opaco, el compositor no tiene que mezclarlo con las capas CRT/fondo inferiores.
+2. **Glow atenuable en móvil.** El `shadowBlur` de los segmentos (`palette.glowHead` / `palette.glowBody`) se multiplica por `glowScale()` (de `app/lib/games/perf.ts`): `1` en desktop (sin cambio de look), `0.5` en `pointer: coarse` y `0` en `prefers-reduced-motion: reduce`. Es un ajuste de valor/condición, no una reescritura del dibujo.
+
+El resto de la solución de SPEC 16 (aislar el compositing CRT y sustituir el `mix-blend-mode`, abaratar las capas de fondo durante el juego, degradación móvil/reduced-motion en CSS e instrumentación de fps) vive fuera de este motor —en `app/globals.css`, `app/components/games/PerfOverlay.tsx` y `app/lib/games/perf.ts`— y se detalla en `specs/16-rendimiento-motores.md`.

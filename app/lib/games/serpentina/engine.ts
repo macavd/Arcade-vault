@@ -9,9 +9,15 @@
 // aceleracion se agrupa en tramos de TIER_SIZE frutas para que velocidad y
 // nivel avancen juntos. Notifica score/vidas/nivel/fin a React via callbacks;
 // no dibuja HUD en el canvas (de eso se encarga .player-hud en React).
-import type { GameCallbacks, GameEngine, GameFactory, GameSkin } from "../types";
+import type {
+  GameCallbacks,
+  GameEngine,
+  GameFactory,
+  GameSkin,
+} from "../types";
 import { FRUITS, FRUIT_KEYS, getFruitsImage, loadFruits } from "./sprites";
 import { getSerpentinaSkin } from "./skins";
+import { glowScale } from "../perf";
 // ── Rejilla / resolucion interna ─────────────────────────────────────────────
 const CELL = 25;
 const W = 800;
@@ -36,12 +42,15 @@ export const createSerpentinaGame: GameFactory = (
   callbacks: GameCallbacks,
   skin: GameSkin = "clasico",
 ): GameEngine => {
-  const ctx = canvas.getContext("2d")!;
+  // Canvas opaco (SPEC 16): draw() rellena el frame completo cada vuelta.
+  const ctx = canvas.getContext("2d", { alpha: false })!;
   canvas.width = W;
   canvas.height = H;
   // Paleta del skin activo, resuelta una vez (CanvasGame reinstancia el motor
   // al cambiar de skin). draw()/drawFood()/drawSnake() leen cada rol de aqui.
   const palette = getSerpentinaSkin(skin);
+  // SPEC 16: atenúa el glow en móvil/reduced-motion (desktop = 1, sin cambio).
+  const GLOW = glowScale();
   // Carga perezosa del sprite de frutas (idempotente, compartido entre
   // instancias). Hasta que carga, drawFood dibuja un circulo de reserva.
   loadFruits();
@@ -216,7 +225,7 @@ export const createSerpentinaGame: GameFactory = (
       const head = i === 0;
       ctx.fillStyle = head ? palette.head : palette.body;
       ctx.shadowColor = palette.glowColor;
-      ctx.shadowBlur = head ? palette.glowHead : palette.glowBody;
+      ctx.shadowBlur = (head ? palette.glowHead : palette.glowBody) * GLOW;
       roundRect(seg.x * CELL + 2, seg.y * CELL + 2, CELL - 4, CELL - 4, 6);
       ctx.fill();
     }

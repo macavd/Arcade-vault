@@ -16,6 +16,7 @@ import type {
   GameFactory,
   GameSkin,
 } from "../types";
+import { glowScale } from "../perf";
 // ── Rejilla / resolución interna ─────────────────────────────────────────────
 const CELL = 50;
 const COLS = 16;
@@ -186,7 +187,12 @@ export const createRanariaGame: GameFactory = (
   // RANARIA aún no tiene sistema de paletas (getAvailableSkins devuelve null).
   _skin: GameSkin = "clasico",
 ): GameEngine => {
-  const ctx = canvas.getContext("2d")!;
+  // Canvas opaco (SPEC 16): draw() rellena el frame completo cada vuelta
+  // (drawZones → fillRect(0,0,W,H)), así el compositor no mezcla el canvas con
+  // las capas CRT/fondo inferiores.
+  const ctx = canvas.getContext("2d", { alpha: false })!;
+  // SPEC 16: atenúa el glow de la rana en móvil/reduced-motion (desktop = 1).
+  const GLOW = glowScale();
   canvas.width = W;
   canvas.height = H;
   // ── Estado del juego (encapsulado en el closure) ───────────────────────────
@@ -542,7 +548,7 @@ export const createRanariaGame: GameFactory = (
     // Cuerpo: elipse verde brillante.
     ctx.fillStyle = "#00ff88";
     ctx.shadowColor = "#00ff88";
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 10 * GLOW;
     ctx.beginPath();
     ctx.ellipse(cx, cy, 16, 14, 0, 0, Math.PI * 2);
     ctx.fill();

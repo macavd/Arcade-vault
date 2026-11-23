@@ -1127,6 +1127,11 @@ a {
   box-shadow:
     inset 0 0 60px rgba(0, 0, 0, 0.9),
     inset 0 0 20px rgba(0, 245, 255, 0.15);
+  /* SPEC 16: aísla el compositing de la pantalla. El canvas repinta a 60 fps;
+     con un stacking context propio, su repintado no arrastra a las capas fijas
+     de fondo (.av-bg/.av-noise) a recomponerse cada frame. */
+  isolation: isolate;
+  contain: paint;
 }
 .crt-screen::after {
   content: "";
@@ -1138,7 +1143,10 @@ a {
     transparent 2px 4px
   );
   pointer-events: none;
-  mix-blend-mode: multiply;
+  /* SPEC 16: sin mix-blend-mode. Las scanlines son negro puro (rgba(0,0,0,a)),
+     y multiply de negro puro == alfa normal (ambos dan X·(1−a)): visualmente
+     idéntico, pero el alfa normal no obliga a recomponer la región cada frame
+     cuando el canvas de debajo cambia. */
 }
 .crt-screen::before {
   content: "";
@@ -1185,6 +1193,48 @@ a {
   border-radius: 50%;
   background: var(--green);
   box-shadow: 0 0 6px var(--green);
+}
+
+/* ===== SPEC 16: rendimiento (compositing CRT/fondo) =====
+   Abarata el trabajo de GPU que compite con el loop de canvas mientras se juega
+   y degrada los efectos en móvil / reduced-motion, conservando el look en
+   desktop. */
+
+/* Mientras se juega (el reproductor monta .av-player), pausa la animación
+   continua de la rejilla de fondo: deja de recomponerse detrás del canvas. */
+body:has(.av-player) .av-bg::before {
+  animation-play-state: paused;
+}
+
+/* Táctil / móvil: el peor caso para el compositing CRT. Atenúa scanlines y
+   ruido, quita la animación de la rejilla y baja la viñeta. El glow de los
+   motores se atenúa en JS (lib/games/perf.ts). */
+@media (pointer: coarse) {
+  .av-bg::before {
+    animation: none;
+  }
+  .av-bg::after {
+    opacity: 0.35;
+  }
+  .av-noise {
+    display: none;
+  }
+  .crt-screen::after {
+    opacity: 0.6;
+  }
+}
+
+/* Reduced-motion: sin animaciones de fondo ni flicker; efectos CRT atenuados. */
+@media (prefers-reduced-motion: reduce) {
+  .av-bg::before {
+    animation: none;
+  }
+  .av-noise {
+    display: none;
+  }
+  .flicker {
+    animation: none;
+  }
 }
 
 /* ===== touch controls (SPEC 13) =====

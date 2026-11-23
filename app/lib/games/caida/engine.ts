@@ -93,7 +93,8 @@ export const createCaidaGame: GameFactory = (
   canvas: HTMLCanvasElement,
   callbacks: GameCallbacks,
 ): GameEngine => {
-  const ctx = canvas.getContext("2d");
+  // Canvas opaco (SPEC 16): draw() rellena el frame completo cada vuelta.
+  const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("No se pudo obtener el contexto 2d del canvas");
   canvas.width = W;
   canvas.height = H;
