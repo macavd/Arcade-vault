@@ -48,4 +48,9 @@ Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
 - [ ] **turbovia** — TURBOVÍA · ARCADE/cyan · 2026-10-23 — Road Fighter: conducir a toda velocidad esquivando tráfico en carretera con scroll vertical. Mismo tema que Frogger (esquivar sin morir) pero control continuo de vehículo, no saltos por rejilla. Specs en `specs/game-jam/turbovia/`. Necesita prototipo nuevo (`07-road-fighter`).
 - [ ] **patrulla-lunar** — PATRULLA LUNAR · SHOOTER/yellow · 2026-10-23 — Moon Patrol: buggy que cruza terreno lunar saltando cráteres y disparando rocas/OVNIs. Auto-runner salto+disparo; aporta categoría SHOOTER y color yellow a la tanda. Specs en `specs/game-jam/patrulla-lunar/`. Necesita prototipo nuevo (`08-moon-patrol`).
 
+### Tanda game-jam 2026-11-24 — tema ENJAMBRE
+
+- [ ] **enjambre** — ENJAMBRE · SHOOTER/cyan · 2026-11-24 — Galaga (variante clásica de la jam): formación 10×5 que entra por curvas bézier, respira y se desprende en picados solos o en escuadra, rayo tractor con rescate en doble nave y fase de desafío cada 4. Spec autocontenida (catálogo + leaderboard + motor + táctil + rendimiento) en `specs/game-jam/enjambre/01-enjambre-clasico.md`. Necesita prototipo nuevo (`09-galaga`). Es la spec de la sugerencia `enjambre` de la tanda 2026-10-21.
+- [ ] **enjambre-orbital** — ENJAMBRE ORBITAL · SHOOTER/magenta · 2026-11-24 — Gyruss (variante twist de la jam): el mismo enjambre en geometría polar; la nave orbita un anillo y dispara hacia el núcleo, los picados salen del centro con perspectiva, satélites dan cañón doble y cada 4 fases llega LA COLMENA (núcleo blindado por anillos de celdas contrarrotantes). Slug y leaderboard propios, comparte solo `enjambre/path.ts`. Spec en `specs/game-jam/enjambre/02-enjambre-orbital.md`. Necesita prototipo nuevo (`10-gyruss`).
+
 ## Descartados / implementados
