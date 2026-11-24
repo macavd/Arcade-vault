@@ -48,4 +48,10 @@ Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
 - [ ] **turbovia** — TURBOVÍA · ARCADE/cyan · 2026-10-23 — Road Fighter: conducir a toda velocidad esquivando tráfico en carretera con scroll vertical. Mismo tema que Frogger (esquivar sin morir) pero control continuo de vehículo, no saltos por rejilla. Specs en `specs/game-jam/turbovia/`. Necesita prototipo nuevo (`07-road-fighter`).
 - [ ] **patrulla-lunar** — PATRULLA LUNAR · SHOOTER/yellow · 2026-10-23 — Moon Patrol: buggy que cruza terreno lunar saltando cráteres y disparando rocas/OVNIs. Auto-runner salto+disparo; aporta categoría SHOOTER y color yellow a la tanda. Specs en `specs/game-jam/patrulla-lunar/`. Necesita prototipo nuevo (`08-moon-patrol`).
 
+### Tanda game-jam 2026-11-24 — tema "DETONIX: variantes del mismo Bomberman"
+
+> Nota: `detonix` (tanda 2026-10-21, arriba) **sigue pendiente `- [ ]`**; esta jam solo le escribe specs en `Draft` en `specs/game-jam/detonix/` (variante campaña en `01-detonix-campana.md`). Su estado lo decide la usuaria. Ambas variantes comparten núcleo `app/lib/games/detonix/core.ts` y necesitan prototipo nuevo (`09-bomberman`).
+
+- [ ] **detonix-frenesi** — DETONIX FRENESÍ · ARCADE/magenta · 2026-11-24 — Bomberman supervivencia contrarreloj: arena única con rebrote de bloques, oleadas infinitas por 4 portales y reloj que solo se recarga matando; score = base × tamaño de cadena × combo. Variante de `detonix` que cambia objetivo y puntuación (redes de bombas vs. explorar fases). Spec en `specs/game-jam/detonix/02-detonix-frenesi.md`.
+
 ## Descartados / implementados
