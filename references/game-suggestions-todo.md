@@ -31,7 +31,7 @@ Carril puzzle / lógica (PUZZLE):
 - [ ] **buscaminas** — BUSCAMINAS · PUZZLE/green · 2026-10-21 — Minesweeper: deducción lógica event-driven, primer clic seguro. Mecánica no-apiladora.
 - [ ] **fusion** — FUSIÓN · PUZZLE/yellow · 2026-10-21 — 2048: merge deslizante con score nativo, evitar doble fusión por turno. Distinto a Tetris.
 - [ ] **apagon** — APAGÓN · PUZZLE/cyan · 2026-10-21 — Lights Out: lógica combinatoria de toggles, tableros garantizados resolubles (GF(2)).
-- [ ] **gemas** — GEMAS · PUZZLE/magenta · 2026-10-21 — Match-3 (Bejeweled): swap + combos, bucle de reacción hasta estabilizar. No es caída controlada.
+- [ ] **gemas** — GEMAS · PUZZLE/magenta · 2026-10-21 — Match-3 (Bejeweled): swap + combos, bucle de reacción hasta estabilizar. No es caída controlada. Specs en `specs/game-jam/gemas/` (2026-11-25: catálogo+leaderboard de las dos variantes, motor clásico `gemas` y variante `gemas-bomba`), en `Draft`.
 - [ ] **cajas** — CAJAS · PUZZLE/green · 2026-10-21 — Sokoban: planificación espacial empujando cajas, niveles a mano + detección de deadlock.
 
 Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
@@ -47,5 +47,9 @@ Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
 - [ ] **ranaria** — RANARIA · ARCADE/green · 2026-10-23 — Frogger (juego central de la jam): "Cruza la carretera y el río sin convertirte en papilla". YA existe en el catálogo como maqueta (SPEC 06); la spec es solo de MOTOR (patrón SPEC 09) + rediseño de portada. Specs en `specs/game-jam/ranaria/`. Necesita prototipo nuevo (`06-frogger`).
 - [ ] **turbovia** — TURBOVÍA · ARCADE/cyan · 2026-10-23 — Road Fighter: conducir a toda velocidad esquivando tráfico en carretera con scroll vertical. Mismo tema que Frogger (esquivar sin morir) pero control continuo de vehículo, no saltos por rejilla. Specs en `specs/game-jam/turbovia/`. Necesita prototipo nuevo (`07-road-fighter`).
 - [ ] **patrulla-lunar** — PATRULLA LUNAR · SHOOTER/yellow · 2026-10-23 — Moon Patrol: buggy que cruza terreno lunar saltando cráteres y disparando rocas/OVNIs. Auto-runner salto+disparo; aporta categoría SHOOTER y color yellow a la tanda. Specs en `specs/game-jam/patrulla-lunar/`. Necesita prototipo nuevo (`08-moon-patrol`).
+
+### Tanda game-jam 2026-11-25 — tema "gemas" (variantes del Match-3)
+
+- [ ] **gemas-bomba** — GEMAS BOMBA · PUZZLE/yellow · 2026-11-25 — Match-3 con twist (bombas de cuenta atrás de Bejeweled Twist + power gem 3×3 de Bejeweled 2): variante de **gemas** con slug y leaderboard propios, 3 vidas y barajado en vez de fin por bloqueo. Comparte núcleo de motor con `gemas`. Specs en `specs/game-jam/gemas/` (`01-catalogo-leaderboard-gemas.md`, `03-motor-gemas-bomba.md`). Necesita prototipo nuevo (`09-match3`, compartido con `gemas`).
 
 ## Descartados / implementados
