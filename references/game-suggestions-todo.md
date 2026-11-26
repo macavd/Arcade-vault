@@ -48,4 +48,8 @@ Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
 - [ ] **turbovia** — TURBOVÍA · ARCADE/cyan · 2026-10-23 — Road Fighter: conducir a toda velocidad esquivando tráfico en carretera con scroll vertical. Mismo tema que Frogger (esquivar sin morir) pero control continuo de vehículo, no saltos por rejilla. Specs en `specs/game-jam/turbovia/`. Necesita prototipo nuevo (`07-road-fighter`).
 - [ ] **patrulla-lunar** — PATRULLA LUNAR · SHOOTER/yellow · 2026-10-23 — Moon Patrol: buggy que cruza terreno lunar saltando cráteres y disparando rocas/OVNIs. Auto-runner salto+disparo; aporta categoría SHOOTER y color yellow a la tanda. Specs en `specs/game-jam/patrulla-lunar/`. Necesita prototipo nuevo (`08-moon-patrol`).
 
+### Tanda game-jam 2026-11-26 — tema cavador
+
+- [ ] **cavador-derrumbe** — CAVADOR DERRUMBE · PUZZLE/cyan · 2026-11-26 — Dig Dug por turnos (variante con twist de `cavador`): sin bomba de aire, solo se mata aplastando con rocas (socavar, empujar, cascadas), presupuesto de pico, deshacer y 12 niveles a mano con solución verificable. Lleva el arquetipo de reflejos a planificación y añade un puzzle de física de caída a PUZZLE (solo caida). Spec en `specs/game-jam/cavador/02-cavador-derrumbe.md`; la variante clásica `cavador` (entrada de 2026-10-21, sin cambiar de estado) tiene su spec en `specs/game-jam/cavador/01-cavador-clasico.md`. Necesita prototipo nuevo (`09-dig-dug`).
+
 ## Descartados / implementados
