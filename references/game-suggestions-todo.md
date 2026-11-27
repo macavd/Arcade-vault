@@ -48,4 +48,12 @@ Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
 - [ ] **turbovia** — TURBOVÍA · ARCADE/cyan · 2026-10-23 — Road Fighter: conducir a toda velocidad esquivando tráfico en carretera con scroll vertical. Mismo tema que Frogger (esquivar sin morir) pero control continuo de vehículo, no saltos por rejilla. Specs en `specs/game-jam/turbovia/`. Necesita prototipo nuevo (`07-road-fighter`).
 - [ ] **patrulla-lunar** — PATRULLA LUNAR · SHOOTER/yellow · 2026-10-23 — Moon Patrol: buggy que cruza terreno lunar saltando cráteres y disparando rocas/OVNIs. Auto-runner salto+disparo; aporta categoría SHOOTER y color yellow a la tanda. Specs en `specs/game-jam/patrulla-lunar/`. Necesita prototipo nuevo (`08-moon-patrol`).
 
+### Tanda game-jam 2026-11-27 — tema buscaminas
+
+Jam sobre un juego base (`buscaminas`, elegido al azar entre los pendientes): tres variantes jugables distintas, no duplicados. Índice y razonamiento en `specs/game-jam/buscaminas/00-jam.md`. La entrada original `buscaminas` (2026-10-21) de arriba **no se toca**: su estado lo decide la usuaria tras revisar las specs.
+
+- [ ] **buscaminas** — BUSCAMINAS · PUZZLE/green · 2026-11-27 — Minesweeper clásico (variante fiel, mismo slug que la entrada del 2026-10-21): campaña de tableros Principiante→Intermedio→Experto→Experto+, primer clic seguro 3×3, una vida, tiempo como bonus (score ascendente). Primer juego dirigido por puntero del catálogo. Specs `01-catalogo-leaderboard-buscaminas.md` + `02-motor-buscaminas.md` en `specs/game-jam/buscaminas/`. Necesita prototipo nuevo (`09-buscaminas`).
+- [ ] **zapador** — ZAPADOR · ARCADE/cyan · 2026-11-27 — Minesweeper de scroll infinito contrarreloj: el campo desciende hacia una línea de detonación y cada fila que la cruza sin despejar cuesta una vida (3 vidas, rachas, turbo). Lleva la deducción del buscaminas a ritmo arcade. Specs `03-catalogo-leaderboard-zapador.md` + `04-motor-zapador.md` en `specs/game-jam/buscaminas/`. Necesita prototipo nuevo (`10-zapador`).
+- [ ] **panal** — PANAL · PUZZLE/yellow · 2026-11-27 — Minesweeper hexagonal: gran hexágono de celdas con 6 vecinas (rompe los patrones del clásico), panales crecientes, 3 vidas por partida y +1 vida por panal perfecto. Specs `05-catalogo-leaderboard-panal.md` + `06-motor-panal.md` en `specs/game-jam/buscaminas/`. Necesita prototipo nuevo (`11-panal`).
+
 ## Descartados / implementados
