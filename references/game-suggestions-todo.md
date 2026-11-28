@@ -48,4 +48,11 @@ Carril plataformas / deportes / habilidad (ARCADE + VERSUS):
 - [ ] **turbovia** — TURBOVÍA · ARCADE/cyan · 2026-10-23 — Road Fighter: conducir a toda velocidad esquivando tráfico en carretera con scroll vertical. Mismo tema que Frogger (esquivar sin morir) pero control continuo de vehículo, no saltos por rejilla. Specs en `specs/game-jam/turbovia/`. Necesita prototipo nuevo (`07-road-fighter`).
 - [ ] **patrulla-lunar** — PATRULLA LUNAR · SHOOTER/yellow · 2026-10-23 — Moon Patrol: buggy que cruza terreno lunar saltando cráteres y disparando rocas/OVNIs. Auto-runner salto+disparo; aporta categoría SHOOTER y color yellow a la tanda. Specs en `specs/game-jam/patrulla-lunar/`. Necesita prototipo nuevo (`08-moon-patrol`).
 
+### Tanda game-jam 2026-11-28 — tema/juego base "aleteo" (variantes de un volador de un botón)
+
+> Specs en `specs/game-jam/aleteo/` (Draft). La entrada original de **aleteo** (tanda 2026-10-21) sigue pendiente y sin mover: la usuaria decide tras revisar. Las dos variantes son independientes (se puede implementar una sin la otra).
+
+- [ ] **aleteo** (variante clásica) — ALETEO · ARCADE/yellow · 2026-11-28 — Flappy Bird: un botón = aletazo (impulso que fija vy), tuberías con hueco aleatorio justo, velocidad creciente, timestep fijo 120 Hz, +1/tubería. Specs `01-catalogo-leaderboard-aleteo` + `02-motor-aleteo`. Necesita prototipo nuevo (`09-flappy`).
+- [ ] **aleteo-inverso** — ALETEO INVERSO · ARCADE/magenta · 2026-11-28 — Gravity Guy/VVVVVV en formato volador: un botón invierte la gravedad conservando la inercia, rieles mortales arriba y abajo, barras de techo/suelo y bloques flotantes, chispas de riesgo (+10/obstáculo, +25/chispa). Mecánica distinta del clásico (anticipación vs ritmo). Specs `03-catalogo-leaderboard-aleteo-inverso` + `04-motor-aleteo-inverso`. Necesita prototipo nuevo (`10-gravity-flap`).
+
 ## Descartados / implementados
